@@ -1,0 +1,155 @@
+<div ui-view="" style="padding:2em" class="ng-scope">
+    <!-- uiView:  -->
+    <div ui-view="" class="ng-scope">
+        <!-- uiView:  -->
+        <div ui-view="" class="ng-scope">
+            <!-- uiView:  -->
+            <div ui-view="" class="ng-scope">
+                <table style="width:100%;">
+                    <tbody>
+                        <tr>
+                            <td width="13%">
+                                <button [routerLink]="['/artefactManage']" class="btn btn-default back-btn" ui-sref="^">
+                                    <span class="glyphicon glyphicon-arrow-left backbtn-icon"></span>&nbsp;Back</button>
+                            </td>
+                            <td align="center">
+                                <h3 style="text-align: center; margin: 0;">
+                                    <small>
+                                        <a ui-sref="admin.inst" ct-sref="admin.inst,,disable" class="ng-binding" href="#/admin/inst">BTL-College 2017-18</a>
+                                        <i class="fa fa-angle-right"></i>
+                                        <a ui-sref="^" ct-sref="admin.inst.artefact,,disable" href="#/admin/inst/artefacts">Artefact</a> &gt;
+                                        <strong>Upload</strong>
+                                    </small>
+                                </h3>
+                            </td>
+                            <td width="13%"> &nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <form name="form" class="form-horizontal ng-pristine ng-invalid ng-invalid-required" role="form" novalidate="">
+                    <div style="width: 100%; margin-top: 12px; margin-bottom: 6px;">
+                        <div class="panel panel-default" style="border: none; margin-bottom: 0;">
+                            <div class="panel-heading">Artefact Details
+                                <span class="pull-right" style="cursor:pointer">
+                                    <input type="checkbox" ng-model="model.newArtefact.autoExtract" style="cursor:pointer" class="ng-pristine ng-valid">
+                                    <label ng-click="toggleExtract()" style="font-weight:normal;margin-top:-2%;cursor:pointer">Auto Extract</label>
+                                </span>
+                            </div>
+                            <br>
+                            <!-- ngIf: !model.newArtefact.autoExtract -->
+                            <div ng-if="!model.newArtefact.autoExtract" class="panel-body ng-scope">
+                                <div class="row">
+                                    <div class="col-md-7" style="padding-left:0;padding-right:2%">
+
+                                        <div class="form-group has-error" ng-class="{'has-error': form.title.$invalid}">
+                                            <label for="title" class="col-sm-3 control-label">Title</label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="title" class="form-control ng-pristine ng-invalid ng-invalid-required" ng-model="model.newArtefact.Title"
+                                                    maxlength="50" required="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description" class="col-sm-3 control-label">Description</label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="description" class="form-control ng-pristine ng-valid" ng-model="model.newArtefact.Description"
+                                                    maxlength="50">
+                                            </div>
+                                        </div>
+                                        <div class="form-group has-error" ng-class="{'has-error': form.contentType.$invalid}">
+                                            <label for="contentType" class="col-sm-3 control-label">Format</label>
+                                            <div class="col-md-6">
+                                                <select class="form-control ng-pristine ng-invalid ng-invalid-required" style="width:100%;" name="contentType" required="required"
+                                                    ng-model="model.newArtefact.MimeType">
+                                                    <option value="" disabled="" selected="" style="display: none;"></option>
+                                                    <option value="text/csv">csv</option>
+                                                    <option value="text/html">html</option>
+                                                    <option value="application/json">json</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-class="{'has-error': form.meta.$invalid}" style="margin-bottom:0">
+                                            <label for="meta" class="col-sm-3 control-label">Meta</label>
+                                            <div class="col-md-9" style="padding-left:5%;padding-top:0.3%;padding-right:0">
+                                                <table style="width:100%">
+                                                    <tbody>
+                                                        <!-- ngRepeat: meta in model.newArtefact.MetaData -->
+                                                        <tr ng-repeat="meta in model.newArtefact.MetaData" class="ng-scope">
+                                                            <td style="padding:0">
+                                                                <div class="form-group" style="margin-bottom:2%">
+                                                                    <span>
+                                                                        <a href="" ng-click="deleteMetaRow(model.newArtefact,meta)">
+                                                                            <i class="fa fa-minus-circle pull-left" style="font-size:0.9em;color:#A71500;margin-top:7px;padding-right: 5px;"></i>
+                                                                        </a>
+                                                                    </span>
+                                                                    <span>
+                                                                        <input ng-show="meta.showKeyInp" type="text" class="col-md-5 ng-pristine ng-valid ng-hide" placeholder="key" ng-model="meta.Key"
+                                                                            ng-trim="false" ng-change="meta.Key = meta.Key.split(' ').join('')"
+                                                                            style="margin-right:4px;padding:2px;border: 1px solid #ccc;border-radius: 4px;padding-left:1.5%">
+                                                                        <select ng-show="meta.showKeyDD" class="col-md-5 ng-pristine ng-valid" ng-model="meta.Key" ng-change="setKey(model.newArtefact,meta)"
+                                                                            style="height:2em;background-color:inherit;border-radius:4px;border-color:lightgray;padding-left:1%">
+                                                                            <option value="" disabled="" selected="" style="display: none;"></option>
+                                                                            <option value="asset">asset</option>
+                                                                            <option value="course">course</option>
+                                                                            <option value="custom">custom</option>
+                                                                        </select>
+                                                                    </span>
+                                                                    <span>
+                                                                        <input ng-show="meta.showValInp" type="text" class="col-md-5 ng-pristine ng-valid ng-hide" placeholder="value" ng-model="meta.Value"
+                                                                            style="margin-right:0.5%;padding:2px;border: 1px solid #ccc;border-radius: 4px;padding-left:1.5%;margin-left:0.5%">
+                                                                        <select ng-show="meta.showValDD" class="col-md-5 ng-pristine ng-valid ng-hide" ng-model="meta.Value" ng-options="course as course.CourseOpt for course in model.courseOps"
+                                                                            ng-change="" style="margin-left:1%;height:2em;background-color:inherit;border-radius:4px;border-color:lightgray;padding-left:1%;margin-right:0.5%">
+                                                                            <option value="?" selected="selected"></option>
+                                                                        </select>
+                                                                    </span>
+                                                                    <span ng-show="meta.showValDD||meta.showValInp" class="ng-hide">
+                                                                        <a href="" ng-click="addMetaRow(model.newArtefact,meta)">
+                                                                            <i class="fa fa-plus-circle" style="font-size:0.9em;color:#3c763d;margin-top:7px;padding-left: 5px;"></i>
+                                                                        </a>
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!-- end ngRepeat: meta in model.newArtefact.MetaData -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div ng-hide="form.$invalid" class="col-md-5 text-center ng-hide" style="border-left:1px solid lightgray;min-height:13em">
+                                        <div class="dropzone ng-isolate-scope" file-dropzone="[text/csv,text/html,application/json]" file="image" file-name="imageFileName"
+                                            data-max-file-size="0.5">
+                                            <div style="align-self:center;width:100%;min-height:inherit;padding-top:5%">
+                                                <span style="padding-right:1%">
+                                                    <i class="fa fa-file-text-o" style="font-size:3em"></i>
+                                                </span>
+                                                <span style="vertical-align:top;font-size:1.1em">Drop (csv, html, json) File Here</span>
+                                                <span style="display:block;font-size:1.1em;margin-top:-5%">Max file size is 500 KB</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-center" style="color:lightgray;padding-top:5%;padding-bottom:5%;font-size:1.1em">
+                                            <strong>OR</strong>
+                                        </div>
+                                        <div class="form-group" style="padding-left:2%">
+                                            <label for="upload" class="col-sm-3 control-label">Upload</label>
+                                            <div class="col-md-6" style="padding-top:1.5%">
+                                                <input type="file" ng-file-select="uploadArtefacts($files)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end ngIf: !model.newArtefact.autoExtract -->
+
+                            <!-- ngIf: model.newArtefact.autoExtract -->
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
